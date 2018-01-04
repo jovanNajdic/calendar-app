@@ -20,17 +20,31 @@ class QuickAddForm extends Component {
     });
   };
 
+  validate = data => {
+    const errors = {};
+    const reg = /^((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))\/(.[^\/]*)\/(.[^\/]*)/;
+    if (!reg.test(data)) {
+      errors.text = "Example: 22/any string/any string";
+    }
+    return errors;
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state.data.text);
-    this.setState(
-      {
-        data: {
-          text: ""
-        }
-      },
-      () => this.props.closeForm()
-    );
+    const errors = this.validate(this.state.data.text);
+    if (Object.keys(errors).length === 0) {
+      this.props.onSubmit(this.state.data.text);
+      this.setState(
+        {
+          data: {
+            text: ""
+          }
+        },
+        () => this.props.closeForm()
+      );
+    } else {
+      this.setState({ errors });
+    }
   };
 
   render() {
