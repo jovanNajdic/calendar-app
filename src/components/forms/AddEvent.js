@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ErrorMessage from "../parts/ErrorMessage";
 
 class AddEvent extends Component {
   constructor() {
@@ -22,7 +23,7 @@ class AddEvent extends Component {
   validate = data => {
     const errors = {};
     if (!data.title || !data.user) {
-      errors.blank = `Can't be blank`;
+      errors.blank = `user(s) and title, please`;
     }
     return errors;
   };
@@ -104,6 +105,9 @@ class AddEvent extends Component {
           onChange={this.onChange}
           value={this.state.data.description}
         />
+        {!!this.state.errors.blank && (
+          <ErrorMessage text={this.state.errors.blank} />
+        )}
         <div className="form__buttons">
           <button
             className="form__button form__button--submit"

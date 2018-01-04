@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ErrorMessage from "../parts/ErrorMessage";
 
 class QuickAddForm extends Component {
   constructor() {
@@ -6,7 +7,8 @@ class QuickAddForm extends Component {
     this.state = {
       data: {
         text: ""
-      }
+      },
+      errors: {}
     };
   }
 
@@ -60,6 +62,9 @@ class QuickAddForm extends Component {
             onClick={this.props.closeForm}
           />
         </span>
+        {!!this.state.errors.text && (
+          <ErrorMessage text={this.state.errors.text} />
+        )}
         <input
           type="text"
           id="text"
