@@ -8,7 +8,8 @@ class AddEvent extends Component {
         title: "",
         description: "",
         user: ""
-      }
+      },
+      errors: {}
     };
   }
 
@@ -18,9 +19,30 @@ class AddEvent extends Component {
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
 
+  validate = data => {
+    const errors = {};
+    if (!data.title || !data.user) {
+      errors.blank = `Can't be blank`;
+    }
+    return errors;
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    this.props.addEvent(this.state.data);
+    const errors = this.validate(this.state.data);
+    if (Object.keys(errors).length === 0) {
+      this.props.addEvent(this.state.data);
+      this.setState({
+        ...this.state,
+        data: {
+          ...this.state.data,
+          title: "",
+          user: ""
+        }
+      });
+    } else {
+      this.setState({ errors });
+    }
   };
 
   render() {
